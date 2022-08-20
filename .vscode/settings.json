@@ -1,0 +1,16 @@
+{
+  "files.associations": {
+    "iosfwd": "cpp",
+    "compare": "cpp",
+    "deque": "cpp",
+    "list": "cpp",
+    "string": "cpp",
+    "vector": "cpp",
+    "ostream": "cpp",
+    "iostream": "cpp",
+    "array": "cpp",
+    "tuple": "cpp",
+    "utility": "cpp",
+    "variant": "cpp"
+  }
+}
