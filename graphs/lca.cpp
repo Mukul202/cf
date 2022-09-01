@@ -334,3 +334,4 @@ int lca(int v, int u) {
     }
     return euler_tour[ans];
 }
+
