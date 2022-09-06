@@ -23,5 +23,9 @@ vector<int>top_sort(int n){
       }
     }
   }
+  if(ans.size()!=n){
+    //no topsort
+    return {};
+  }
   return ans;
 }

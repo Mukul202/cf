@@ -49,3 +49,37 @@ pair<int, int> fib (int n) {
     else
         return {c, d};
 }
+
+
+//own template
+using ll=long long;
+const ll mod=1e9+7;
+
+
+vector<vector<ll>>mul(vector<vector<ll>>&a,vector<vector<ll>>&b){
+  int p=(int)a.size();
+  int q=(int)a[0].size();
+  int r=(int)b[0].size();
+  
+  vector<vector<ll>>res(p,vector<ll>(r));
+  
+  for(int i=0;i<p;++i){
+    for(int j=0;j<q;++j){
+      for(int k=0;k<r;++k){
+        res[i][k]+=(a[i][j]*b[j][k])%mod;
+        res[i][k]%=mod;
+      }
+    }
+  }
+  
+  return res;
+}
+
+vector<vector<ll>>power(vector<vector<ll>>&a,int p){
+  if(p==1)return a;
+  
+  auto subans=power(a,p/2);
+  subans=mul(subans,subans);
+  if(p&1)subans=mul(subans,a);
+  return subans;
+}

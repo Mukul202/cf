@@ -1,17 +1,19 @@
 #pragma GCC optimize("Ofast")
 #pragma GCC optimize("unroll-loops")
 #pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,avx2,fma")
+#include<bits/stdc++.h>
+using namespace std;
 
+
+//in order to use this comment out #define int long long line
 #include <ext/pb_ds/assoc_container.hpp> 
 #include <ext/pb_ds/tree_policy.hpp>
 
 
-#include<bits/stdc++.h> 
 using namespace __gnu_pbds; 
-using namespace std;
 
 template <typename num_t>
-using PBDS = tree<num_t, null_type, greater<num_t>, rb_tree_tag, tree_order_statistics_node_update>;
+using PBDS = tree<num_t, null_type, less<num_t>, rb_tree_tag, tree_order_statistics_node_update>;
 
 #define printclock cerr << "Time : " << 1000 * (long double)clock() / (long double)CLOCKS_PER_SEC << "ms\n";
 
@@ -31,7 +33,7 @@ int main(){
     vector<int> a(n+1);
     for(int i=1;i<=n;++i)cin>>a[i];
     long long ans = 0;
-    PBDS<pair<int,int>> s1;
+    PBDS<int> s1;
     for(int i=1;i<=n;++i){
       pair<int,int>val={a[i],n-i+1};
       ans+=s1.order_of_key(val);
