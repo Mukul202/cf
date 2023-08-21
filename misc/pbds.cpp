@@ -15,6 +15,27 @@ using namespace __gnu_pbds;
 template <typename num_t>
 using PBDS = tree<num_t, null_type, less<num_t>, rb_tree_tag, tree_order_statistics_node_update>;
 
+template<class key, class value, class cmp = std::less<key>>
+using ordered_map = tree<key, value, cmp, rb_tree_tag, tree_order_statistics_node_update>;
+
+//for unordered_map
+#include <ext/pb_ds/assoc_container.hpp>
+using namespace __gnu_pbds;
+template<class K,class V> using ht = gp_hash_table<
+    K,
+    V,
+    hash<K>,//change it to custom_hash in case of integers
+    equal_to<K>,
+    direct_mask_range_hashing<>,
+    linear_probe_fn<>,
+    hash_standard_resize_policy<
+      hash_exponential_size_policy<>,
+      hash_load_check_resize_trigger<>,
+      true 
+    >
+>;
+//for unordered_set -> ht<int,null_type>
+
 #define printclock cerr << "Time : " << 1000 * (long double)clock() / (long double)CLOCKS_PER_SEC << "ms\n";
 
 int main(){

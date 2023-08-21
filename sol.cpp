@@ -1,112 +1,168 @@
-#include<bits/stdc++.h> 
-#include <ext/pb_ds/assoc_container.hpp> 
-#include <ext/pb_ds/tree_policy.hpp> 
-using namespace std; 
-using namespace __gnu_pbds; 
-typedef long long ll; 
-typedef tree<ll, null_type, less<ll>, rb_tree_tag, tree_order_statistics_node_update> pbds; 
-const int mod = 1e9 + 7; 
-#define endl "\n" 
-#define debug(x) cout<<x<<endl; 
+#pragma GCC optimize("Ofast")
+#pragma GCC optimize("unroll-loops")
+#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,avx2,fma")
+
+#include <bits/stdc++.h>
+#define int long long
+#define ld long double
+#define all(x) x.begin(), x.end()
+#define fr(i, n) for (int i = 0; i < (int)n; i++)
+#define ff first
+#define ss second
 #define FILE                        \
   freopen("input.txt", "r", stdin); \
   freopen("output.txt", "w", stdout)
-//less_equal for multiset 
-//greater for descending order 
-//__builtin_popcountll() no of 1 in binary; 
-//__builtin_clzll() leading zero 
-//__builtin_ctzll() trailing zero 
-int main() 
-{ 
-  #ifndef ONLINE_JUDGE
-  FILE;
-#endif
-    ios_base::sync_with_stdio(false); 
-    cin.tie(0); 
-    ll t; 
-    cin >> t; 
-    for (int p = 1 ; p <= t; p++) 
-    { 
-        ll n; 
-        cin >> n;
-        auto f=[&](int x){
-          return x*(x-1)/2;
-        }; 
-        vector<string> v; 
-        auto f1=[&](int x){
-          return x*(x-1)/2;
-        };
-        for (int i = 0; i < n; i++) 
-        { 
-          auto f2=[&](int x){
-          return x*(x-1)/2;
-        };
-            string s; 
-            cin >> s; auto f3=[&](int x){
-          return x*(x-1)/2;
-        };
-            v.push_back(s); 
-        } 
-        map<char, ll> mp; 
-        auto f4=[&](int x){
-          return x*(x-1)/2;
-        };
-        for (int i = 0; i < v.size(); i++) 
-        { 
-            for (int j = 0; j < v[i].size(); j++) 
-            { 
-              auto f5=[&](int x){
-          return x*(x-1)/2;
-        };
-                mp[v[i][j]] = 1; 
-            } 
-        } 
-        string ans = ""; 
-        auto f6=[&](int x){
-          return x*(x-1)/2;
-        };
-        ll flag = 0; 
-        do 
-        { 
-            string l = ""; 
-            for (int i = 0; i < v.size(); i++) 
-            { 
-              auto f7=[&](int x){
-          return x*(x-1)/2;
-        };
-                l += v[i]; 
-            } 
-            string k = l; 
-            auto it = unique(l.begin(), l.end()); 
-            auto f8=[&](int x){
-          return x*(x-1)/2;
-        };
-            l = string(l.begin(), it); 
-            //cout << k << " " << p << endl; 
-            if (l.size() == mp.size()) 
-            { 
-                ans = k; 
-                flag = 1; 
-                auto f9=[&](int x){
-          return x*(x-1)/2;
-        };
-                break; 
-            } 
-        } 
-        while (next_permutation(v.begin(), v.end())); 
-        if (flag) 
-        { 
-          auto f10=[&](int x){
-          return x*(x-1)/2;
-        };
-            cout << "Case #" << p << ": " << ans << endl; 
-        } 
-        else 
-        { 
-          auto f11=[&](int x){
-          return x*(x-1)/2;
-        };
-            cout << "Case #" << p << ": " << "IMPOSSIBLE" << endl; 
-        } 
-    } 
+#define pb emplace_back // push_back
+#define fio                         \
+  ios_base::sync_with_stdio(false); \
+  cin.tie(NULL);
+#define ps(x, y) fixed << setprecision(y) << x
+const int mod = 1000000007;
+#define printclock cerr << "Time : " << 1000 * (ld)clock() / (ld)CLOCKS_PER_SEC << "ms\n";
+using namespace std;
+
+const int INF = 0x3f3f3f3f3f3f3f3f;
+const int inf=1e9;
+
+const int N = 1e5 + 5;
+#define mod2 998244353
+
+template <typename T>
+using min_pq = priority_queue<T, std::vector<T>, greater<T>>;
+#define pii pair<int, int>
+
+template <class T, class F>
+istream &operator>>(istream &is, pair<T, F> &p)
+{
+  is >> p.ff >> p.ss;
+  return is;
+}
+template <typename T>
+istream &operator>>(istream &is, vector<T> &v)
+{
+  for (auto &it : v)
+    is >> it;
+  return is;
+}
+template <typename... Args>
+void in(Args &...args)
+{
+  ((cin >> args), ...);
+}
+
+template <class T, class U>
+ostream &operator<<(ostream &os, pair<T, U> &p)
+{
+  os << p.ff << " " << p.ss;
+  return os;
+}
+template <typename T>
+ostream &operator<<(ostream &os, vector<T> &x)
+{
+  for (auto &el : x)
+    os << el << " ";
+  return os;
+}
+template <typename... Args>
+void out(Args... args)
+{
+  ((cout << args << " "), ...);
+  cout << "\n";
+}
+// template<typename T>void out(T& x){for(auto&el :x)cout<<el<<" ";cout<<"\n";}
+template <typename T, typename... Args>
+std::string debug_detail(const char *names, T &&var, Args &&...args)
+{
+  std::stringstream builder;
+  const char *end = names;
+  while (*end != ',' && *end != '\0')
+    ++end;
+  (builder).write(names, end - names) << '=' << var;
+  if constexpr (sizeof...(Args) > 0)
+  {
+    (builder << ", ") << debug_detail(end + 1, std::forward<Args>(args)...);
+  }
+  return builder.str();
+}
+template <typename... Args>
+void debug_entry(const char *names, Args &&...args)
+{
+  std::stringstream retval;
+  retval << "[" << debug_detail(names, std::forward<Args>(args)...) << "]\n";
+  std::cout << retval.str();
+}
+#define deb(...) debug_entry(#__VA_ARGS__, __VA_ARGS__)
+
+vector<int> prefix_function(string s) {
+    int n = (int)s.length();
+    vector<int> pi(n);
+    for (int i = 1; i < n; i++) {
+        int j = pi[i-1];
+        while (j > 0 && s[i] != s[j])
+            j = pi[j-1];
+        if (s[i] == s[j])
+            j++;
+        pi[i] = j;
+    }
+    return pi;
+}
+
+inline void solve()
+{
+  int n;
+  string s;
+  in(n,s);
+  vector<int>p=prefix_function(s);
+  vector<int>dp(n+1);
+  dp[0]=0,dp[1]=p[1];
+  for(int i=2;i<n;++i){
+    if(!p[i] || p[i]==1){
+      dp[i]=p[i];
+      continue;
+    }
+    dp[i]=(!dp[p[i]-1]?p[i]:dp[p[i]-1]);
+  }
+  int ans=0;
+  for(int i=1;i<n;++i){
+    if(!dp[i])continue;
+    ans+=(i+1LL-dp[i]);
+  }
+  out(ans);
+}
+
+inline void solve2()
+{
+  string s,t;
+  in(s,t);
+  int n=(int)s.length();
+  int m=(int)t.length();
+  vector<int>p=prefix_function(t+'#'+s);
+  int cnt=0;
+  for(int i=m;i<=n+m;++i)if(p[i]==m)cnt++;
+  out(cnt);
+}
+
+inline void solve3()
+{
+  
+}
+
+int32_t main()
+{
+  fio;
+// #ifndef ONLINE_JUDGE
+//   FILE;
+// #endif
+
+
+  int t = 1;
+  // cin >> t;
+  fr(j, t)
+  {
+    // cout<<"Case #"<<j+1<<":  ";
+    solve2();
+  }
+
+  printclock;
+  return 0;
 }

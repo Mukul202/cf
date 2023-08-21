@@ -24,3 +24,24 @@ void union_sets(int a, int b) {
         components_size[a] += components_size[b];
     }
 }
+
+struct DSU{
+  vector<int>p,component_size;
+  int n;
+  DSU(int _n):n(_n){
+    p.resize(n);
+    iota(all(p),0);
+    component_size.assign(n,1);
+  }
+  int find(int u){if(p[u]==u)return u;return p[u]=find(p[u]);}
+  void merge(int u,int v){
+    int p1=find(u);
+    int p2=find(v);
+    if(p1!=p2){
+      if(component_size[p1]<component_size[p2])swap(p1,p2);
+      p[p2]=p1;
+      component_size[p1]+=component_size[p2];      
+    }
+  }
+  bool same_set(int u,int v){return find(u)==find(v);}
+};

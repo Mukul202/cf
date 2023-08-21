@@ -92,65 +92,75 @@ void debug_entry(const char *names, Args &&...args)
 }
 #define deb(...) debug_entry(#__VA_ARGS__, __VA_ARGS__)
 
+
+//iterative
+template<class T>
+struct Seg {
+	const T ID = 0;
+
+	T comb(T a, T b) { return a+b; }
+
+	int n;
+	vector<T> seg;
+
+	void init(int _n) {
+		n = _n;
+		seg.assign(2 * n, ID);
+	}
+
+	void pull(int p) { seg[p] = comb(seg[2 * p], seg[2 * p + 1]); }
+
+	void upd(int p, T val) {
+		seg[p += n] = val;
+		for (p /= 2; p; p /= 2) pull(p);
+	}
+
+	T query(int l, int r) {
+		T ra = ID, rb = ID;
+		for (l += n, r += n + 1; l < r; l /= 2, r /= 2) {
+			if (l & 1) ra = comb(ra, seg[l++]);
+			if (r & 1) rb = comb(seg[--r], rb);
+		}
+		return comb(ra, rb);
+	}
+};
+
 inline void solve()
 {
   int n;
   in(n);
-  struct edge{
-    int to,a,b;
-    edge(int to,int a,int b){
-      this->to=to;
-      this->a=a;
-      this->b=b;
+  vector<int>a(n);
+  in(a);
+  struct node[
+    int val=0;
+    vector<struct node*>next(2,nullptr);
+    node(){}
+  ];
+  struct node* head;
+  auto insert=[&](int mask){
+    struct node* temp=head;
+    for(int i=0;i<8;++i){
+      int bit=(mask>>i&1);
+      if(temp->next[bit]==nullptr)temp->next[bit]=new node();
+      temp=temp->next[bit];
     }
+    temp->val=mask;
   };
-  vector<vector<edge>>graph(n+1);
-  map<pii,pii>m;
-  for(int j=2;j<=n;++j){
-    int p,a,b;
-    in(p,a,b);
-    // --p;
-    graph[p].pb(edge(j,a,b));
-    m[{p,j}]={a,b};
-  }
-  vector<pii>ans(n+1);
-  deque<int>v;
-  function<void(int,int)>f=[&](int node,int par){
-    //1 means par was included
-    //ans[par].ff stores the diff Ea-Eb
-
-    auto [a,b]=m[{par,node}];
-
-    v.pb((v.empty()?b:v.back()+b));
-
-    // deb(par,a,b,node,v[node]);
-
-    //find the required len 
-    int req=ans[par].first+a;
-
-    auto it=upper_bound(all(v),req);
-
-    if(it==v.begin()){
-      ans[node]=pair{req,0LL};
-    }else{
-      ans[node]=pair{req,it-v.begin()};
+  auto search=[&](int mask){
+    auto temp=head;
+    for(int i=0;i<8;++i){
+      int bit=(mask>>i&1);
+      if(temp->next[bit^1])temp=temp->next[bit^1];
+      else temp=temp->next[bit];
     }
-
-    for(auto [child,a,b]:graph[node]){
-      f(child,node);
-    }
-    v.pop_back();
+    return temp->val^mask;
   };
-  ans[0]=pair{0,0};
-  // v[1]=vector<int>();
-  for(auto [child,a,b]:graph[1]){
-    // deb(child,a,b);
-    f(child,1);
+  int ans=0;
+  for(auto el:a){
+    insert(el);
+    ans=max(ans,search(el));
   }
-  for(int i=2;i<=n;++i){
-    cout<<ans[i].second<<" ";
-  }
-  out("");
+  out(ans);
 }
 
 inline void solve2()
@@ -166,16 +176,16 @@ inline void solve3()
 int32_t main()
 {
   fio;
-#ifndef ONLINE_JUDGE
-  FILE;
-#endif
+// #ifndef ONLINE_JUDGE
+//   FILE;
+// #endif
 
 
   int t = 1;
   cin >> t;
   fr(j, t)
   {
-    // cout<<"Case #"<<j+1<<":  ";
+    // cout<<"Case #"<<j+1<<": ";
     solve();
   }
 
